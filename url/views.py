@@ -21,3 +21,12 @@ class ShowAllLinksView(APIView):
         except short_links.DoesNotExist:
             return Response({"message":"URL 조회 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class DeleteShortLinkView(APIView):
+    def delete(self, request, short_id, *args, **kwargs):
+        try:
+            short_link = ShortLink.objects.get(id=short_id)
+            short_link.delete()
+        except ShortLink.DoesNotExist:
+            return Response({"message":"URL 삭제 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"message":"URL 삭제 성공하였습니다."}, status=status.HTTP_204_NO_CONTENT)

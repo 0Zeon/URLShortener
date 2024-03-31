@@ -13,6 +13,10 @@ class ShortLink(models.Model):
         hash_value = hashlib.md5((url + str(count)).encode()).hexdigest()[:10]
         return hash_value
 
+    def delete(self):
+        self.isDeleted = True
+        super(ShortLink, self).save()
+
     def save(self, *args, **kwargs):
         if not self.hash:
             count = 0
