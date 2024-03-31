@@ -30,3 +30,11 @@ class DeleteShortLinkView(APIView):
         except ShortLink.DoesNotExist:
             return Response({"message":"URL 삭제 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({"message":"URL 삭제 성공하였습니다."}, status=status.HTTP_204_NO_CONTENT)
+
+class RedirectShortLinkView(APIView):
+    def get(self, request, hash, *args, **kwargs):
+        try:
+            short_link = ShortLink.objects.get(hash=hash)
+        except ShortLink.DoesNotExist:
+            return Response({"message":"원본 URL 조회 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return redirect(short_link.originUrl)
