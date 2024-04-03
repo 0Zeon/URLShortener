@@ -39,7 +39,7 @@ class ShowAllLinksView(APIView):
     )
     def get(self, request):
         try:
-            short_links = ShortLink.objects.filter(isDeleted=False)
+            short_links = ShortLink.objects.filter(isDeleted=False).order_by('-createdAt')
             serializer = ShortLinkSerializer(short_links, many=True)
         except short_links.DoesNotExist:
             return Response({"message":"URL 조회 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
