@@ -71,7 +71,7 @@ class RedirectShortLinkView(APIView):
     )
     def get(self, request, hash, *args, **kwargs):
         try:
-            short_link = ShortLink.objects.get(hash=hash)
+            short_link = ShortLink.objects.get(hash=hash, isDeleted=False)
+            return redirect(short_link.originUrl)
         except ShortLink.DoesNotExist:
-            return Response({"message":"원본 URL 조회 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return redirect(short_link.originUrl)
+            return Response({"message": "원본 URL 조회 실패하였습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
