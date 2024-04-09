@@ -19,6 +19,7 @@ class CreateShortLinkView(APIView):
         ),
         responses={
             status.HTTP_201_CREATED: ShortLinkSerializer,
+            status.HTTP_200_OK: 'Short Link 반환 성공했습니다.',
             status.HTTP_400_BAD_REQUEST: 'Short URL 생성 실패하였습니다.'
         }
     )
