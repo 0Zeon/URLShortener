@@ -23,6 +23,13 @@ class CreateShortLinkView(APIView):
         }
     )
     def post(self, request, *args, **kwargs):
+        origin_url = request.data.get('originUrl')
+
+        existing_link = ShortLink.objects.filter(originUrl=origin_url, isDeleted=False).first()
+        if existing_link:
+            serializer = ShortLinkSerializer(existing_link)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         serializer = ShortLinkSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
